@@ -17,7 +17,7 @@
     boot.loader.limine.maxGenerations = 5;
     boot.loader.efi.canTouchEfiVariables = true;
     
-    boot.plymouth.emable = true;
+    boot.plymouth.enable = true;
     boot.initrd.systemd.enable = true;
     boot.kernelParams = [ "quiet" "splash" ];
     boot.consoleLogLevel = 0;

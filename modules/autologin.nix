@@ -1,10 +1,10 @@
 { ... }:
 {
-  flake.modules.nixos.autologin = { ... }: {
+  flake.nixosModules.autologin = { ... }: {
     services.getty.autologinUser = "nicolaivds";
   };
 
-  flake.modules.homeManager.autologin = { ... }: {
+  flake.homeManagerModules.autologin = { ... }: {
     programs.zsh.profileExtra = ''
       if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
         exec Hyprland

@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.hyprland = { pkgs, ... }: {
+  flake.nixosModules.hyprland = { pkgs, ... }: {
     programs.hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
@@ -11,7 +11,7 @@
     security.polkit.enable = true;
   };
 
-  flake.modules.homeManager.hyprland = { pkgs, ... }: {
+  flake.homeManagerModules.hyprland = { pkgs, ... }: {
     # xdg.configFile."hypr" = {
     #  source = ../dotfiles/hypr;
     #  recursive = true;

@@ -22,6 +22,7 @@
         modules = [
           hostModule
           inputs.disko.nixosModules.disko
+          inputs.impermanence.nixosModules.impermanence
           inputs.home-manager.nixosModules.home-manager
           { networking.hostName = lib.mkDefault hostname; }
         ];

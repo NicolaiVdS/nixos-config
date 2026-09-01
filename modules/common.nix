@@ -56,6 +56,9 @@ in
     boot.initrd.availableKernelModules = [
       "virtio_gpu"
       "qxl"
+      "virtio_pci"
+      "virtio_blk"
+      "virtio_scsi"
     ];
 
     # --- single-user account ---------------------------------------------

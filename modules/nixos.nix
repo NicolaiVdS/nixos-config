@@ -15,9 +15,14 @@
     default = { };
   };
 
+  options.flake.modules.hosts = lib.mkOption {
+    type = lib.types.lazyAttrsOf lib.types.deferredModule;
+    default = { };
+  };
+
   config.flake.nixosConfigurations =
     let
-      hosts = config.flake.modules.nixos.hosts or { };
+      hosts = config.flake.modules.hosts;
     in
     lib.mapAttrs (
       hostname: hostModule:
@@ -27,7 +32,7 @@
         modules = [
           hostModule
           inputs.disko.nixosModules.disko
-          inputs.impermanence.nixosModules.impermane
+          inputs.impermanence.nixosModules.impermanence
           inputs.home-manager.nixosModules.home-manager
           { networking.hostName = lib.mkDefault hostname; }
         ];

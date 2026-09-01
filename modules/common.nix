@@ -42,24 +42,18 @@ in
 
     # --- bootloader: Limine, EFI -----------------------------------------
     boot.loader.limine.enable = true;
-    boot.loader.limine.maxGenerations = 10;
+    boot.loader.limine.maxGenerations = 5;
     boot.loader.efi.canTouchEfiVariables = true;
 
     # --- Plymouth: splash + password prompt for LUKS --------------------
-    boot.plymouth.enable = false;
-    # boot.initrd.systemd.enable = true; # needed so Plymouth can show the LUKS unlock prompt
+    boot.plymouth.enable = true;
+    boot.initrd.systemd.enable = true; # needed so Plymouth can show the LUKS unlock prompt
     boot.kernelParams = [
+      "quiet"
+      "splash"
     ];
-    boot.consoleLogLevel = 4;
+    boot.consoleLogLevel = 0;
     boot.initrd.verbose = true;
-
-    boot.initrd.availableKernelModules = [
-      "virtio_gpu"
-      "qxl"
-      "virtio_pci"
-      "virtio_blk"
-      "virtio_scsi"
-    ];
 
     # --- single-user account ---------------------------------------------
     users.users.nicolaivds = {

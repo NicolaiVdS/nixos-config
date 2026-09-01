@@ -11,9 +11,17 @@
       })
     ];
 
-    myImpermanence.enable = false;
+    # Hardware & VM specific drivers
+    boot.initrd.availableKernelModules = [
+      "virtio_gpu"
+      "qxl"
+      "virtio_pci"
+      "virtio_blk"
+      "virtio_scsi"
+    ];
 
     hardware.graphics.enable = true;
+    myImpermanence.enable = false;
 
     system.stateVersion = "26.05";
   };

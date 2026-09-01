@@ -24,9 +24,6 @@
         "superfile".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/superfile";
       };
 
-      home.file."zshrc" = {
-        target = ".zshrc";
-        source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.zshrc";
-      };
+      home.file.".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.zshrc";
     };
 }

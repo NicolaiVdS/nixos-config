@@ -120,7 +120,11 @@ in
       useUserPackages = true;
       extraSpecialArgs = { inherit inputs; };
       users.nicolaivds.imports = (builtins.attrValues homeModules) ++ [
-        { home.stateVersion = "26.05"; }
+        {
+          home.username = "nicolaivds";
+          home.homeDirectory = "/home/nicolaivds";
+          home.stateVersion = "26.05";
+        }
       ];
     };
   };

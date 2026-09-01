@@ -1,6 +1,20 @@
-{ lib, ... }:
+{
+  lib,
+  inputs,
+  config,
+  ...
+}:
+let
+  nixosModules = config.flake.modules.nixos;
+  homeModules = config.flake.modules.homeManager;
+in
 {
   flake.modules.nixos.common = { pkgs, ... }: {
+    imports = [
+      nixosModules.hyprland
+      nixosModules.autologin
+    ];
+
     nix.settings.experimental-features = [
       "nix-command"
       "flakes"
@@ -46,5 +60,17 @@
     programs.zsh.enable = true;
 
     networking.networkmanager.enable = true;
+
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      extraSpecialArgs = { inherit inputs; };
+      sharedModules = [ inputs.impermanence.homeManagerModules.impermanence ];
+      users.nicolaivds.imports = [
+        homeModules.hyprland
+        homeModules.autologin
+        { home.stateVersion = "26.05"; }
+      ];
+    };
   };
 }

@@ -5,16 +5,10 @@
   ...
 }:
 let
-  packagesDir = ./packages;
-  packageFiles = builtins.attrNames (builtins.readDir packagesDir);
-  nixFiles = builtins.filter (file: lib.hasSuffix ".nix" file) packageFiles;
-
   nixosModules = config.flake.modules.nixos;
   homeModules = config.flake.modules.homeManager;
 in
 {
-  imports = map (file: packagesDir + "/${file}") nixFiles;
-
   flake.modules.nixos.common = { pkgs, ... }: {
     imports = [
       nixosModules.hyprland

@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.modules.nixos.impermanence =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.myImpermanence;
     in
@@ -13,21 +18,35 @@
           type = lib.types.str;
           description = "Mapped LUKS device for the btrfs pool, e.g. /dev/mapper/cryptroot";
         };
+
+        luksName = lib.mkOption {
+          type = lib.types.str;
+          description = "LUKS mapping name, e.g. cryptroot (must match disko-layout's luksName)";
+        };
       };
 
       config = lib.mkIf cfg.enable {
-        boot.initrd.postDeviceCommands = lib.mkAfter ''
-          mkdir -p /mnt
-          mount -o subvol=/ ${cfg.rootDevice} /mnt
+        boot.initrd.systemd.services.rollback-root = {
+          description = "Roll back root btrfs subvolume to blank state";
+          wantedBy = [ "initrd.target" ];
+          after = [ "systemd-cryptsetup@${cfg.luksName}.service" ];
+          before = [ "sysroot.mount" ];
+          unitConfig.DefaultDependencies = "no";
+          serviceConfig.Type = "oneshot";
+          path = [ pkgs.btrfs-progs ];
+          script = ''
+            mkdir -p /mnt
+            mount -o subvol=/ ${cfg.rootDevice} /mnt
 
-          if [ -e /mnt/root ]; then
-            btrfs subvolume delete /mnt/root
-          fi
+            if [ -e /mnt/root ]; then
+              btrfs subvolume delete /mnt/root
+            fi
 
-          btrfs subvolume snapshot /mnt/root-blank /mnt/root
+            btrfs subvolume snapshot /mnt/root-blank /mnt/root
 
-          umount /mnt
-        '';
+            umount /mnt
+          '';
+        };
 
         fileSystems."/persist".neededForBoot = true;
 

@@ -14,6 +14,7 @@
     myImpermanence = {
       enable = true;
       rootDevice = "/dev/mapper/cryptroot";
+      luksName = "cryptroot";
     };
 
     hardware.graphics.enable = true;

@@ -37,7 +37,7 @@ in
     time.timeZone = lib.mkDefault "Europe/Brussels";
     i18n.defaultLocale = "en_US.UTF-8";
 
-    # --- zram (matches your Arch setup) --------------------------------
+    # --- zram  --------------------------------
     zramSwap = {
       enable = true;
       algorithm = "zstd";

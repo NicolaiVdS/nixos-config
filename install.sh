@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Redirect standard input back to the interactive terminal
+# (Fixes LUKS passphrase prompt when piped from curl)
+exec </dev/tty
+
 TARGET_HOST="${1:-vm-test}"
 REPO_URL="https://github.com/NicolaiVdS/nixos-config.git"
 WORK_DIR="$HOME/nixos-config"

@@ -5,10 +5,16 @@
   ...
 }:
 let
+  packagesDir = ./packages;
+  packageFiles = builtins.attrNames (builtins.readDir packagesDir);
+  nixFiles = builtins.filter (file: lib.hasSuffix ".nix" file) packageFiles;
+
   nixosModules = config.flake.modules.nixos;
   homeModules = config.flake.modules.homeManager;
 in
 {
+  imports = map (file: packagesDir + "/${file}") nixFiles;
+
   flake.modules.nixos.common = { pkgs, ... }: {
     imports = [
       nixosModules.hyprland
@@ -32,12 +38,12 @@ in
       ];
     };
 
-    nixpkgs.config.allowUnfree = true; # nvidia, zen-browser, etc. need this
+    nixpkgs.config.allowUnfree = true;
 
     time.timeZone = lib.mkDefault "Europe/Brussels";
     i18n.defaultLocale = "en_US.UTF-8";
 
-    # --- zram  --------------------------------
+    # --- zram ----------------------------------
     zramSwap = {
       enable = true;
       algorithm = "zstd";
@@ -51,7 +57,7 @@ in
 
     # --- Plymouth: splash + password prompt for LUKS --------------------
     boot.plymouth.enable = true;
-    boot.initrd.systemd.enable = true; # needed so Plymouth can show the LUKS unlock prompt
+    boot.initrd.systemd.enable = true;
     boot.kernelParams = [
       "quiet"
       "splash"
@@ -113,9 +119,7 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       extraSpecialArgs = { inherit inputs; };
-      users.nicolaivds.imports = [
-        homeModules.hyprland
-        homeModules.autologin
+      users.nicolaivds.imports = (builtins.attrValues homeModules) ++ [
         { home.stateVersion = "26.05"; }
       ];
     };

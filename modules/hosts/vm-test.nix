@@ -1,6 +1,6 @@
-{ ... }:
+{ config, ... }:
 {
-  flake.modules.hosts.vm-test = { config, lib, ... }: {
+  flake.modules.hosts.vm-test = { lib, ... }: {
     imports = [
       config.flake.modules.nixos.common
       config.flake.modules.nixos.impermanence

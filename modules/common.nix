@@ -70,7 +70,42 @@ in
       ];
       shell = pkgs.zsh;
     };
-    programs.zsh.enable = true;
+
+    programs.zsh = {
+      enable = true;
+      interactiveShellInit = ''
+        nswitch() {
+          local repo_dir="$HOME/nixos-config"
+          local repo_url="https://github.com/NicolaiVdS/nixos-config.git"
+          local target_host="''${1:-$(hostname)}"
+
+          if [ ! -d "$repo_dir" ]; then
+            echo "==> Repository not found. Cloning to $repo_dir..."
+            git clone "$repo_url" "$repo_dir" || return 1
+          fi
+
+          cd "$repo_dir" || return 1
+          echo "==> Pulling latest changes..."
+          git pull || return 1
+
+          echo "==> Rebuilding system for host: .#$target_host..."
+          sudo nixos-rebuild switch --flake ".#$target_host"
+        }
+
+        npush() {
+          local repo_dir="$HOME/nixos-config"
+          if [ ! -d "$repo_dir" ]; then
+            echo "==> Repository directory $repo_dir does not exist."
+            return 1
+          fi
+
+          cd "$repo_dir" || return 1
+          git add .
+          git commit -m "''${1:-sync: update nixos config}"
+          git push
+        }
+      '';
+    };
 
     networking.networkmanager.enable = true;
 

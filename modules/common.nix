@@ -46,14 +46,17 @@ in
     boot.loader.efi.canTouchEfiVariables = true;
 
     # --- Plymouth: splash + password prompt for LUKS --------------------
-    boot.plymouth.enable = true;
-    boot.initrd.systemd.enable = true; # needed so Plymouth can show the LUKS unlock prompt
+    boot.plymouth.enable = false;
+    # boot.initrd.systemd.enable = true; # needed so Plymouth can show the LUKS unlock prompt
     boot.kernelParams = [
-      "quiet"
-      "splash"
     ];
-    boot.consoleLogLevel = 0;
-    boot.initrd.verbose = false;
+    boot.consoleLogLevel = 4;
+    boot.initrd.verbose = true;
+
+    boot.initrd.availableKernelModules = [
+      "virtio_gpu"
+      "qxl"
+    ];
 
     # --- single-user account ---------------------------------------------
     users.users.nicolaivds = {

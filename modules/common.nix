@@ -37,6 +37,14 @@ in
     time.timeZone = lib.mkDefault "Europe/Brussels";
     i18n.defaultLocale = "en_US.UTF-8";
 
+    systemd.services.home-manager-nicolaivds = {
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+    };
+
+    systemd.network.wait-online.enable = false;
+    networking.networkmanager.wait-online.enable = true;
+
     # --- zram ----------------------------------
     zramSwap = {
       enable = true;

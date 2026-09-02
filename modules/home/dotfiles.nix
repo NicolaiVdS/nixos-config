@@ -16,21 +16,34 @@
           $DRY_RUN_CMD ${pkgs.git}/bin/git -C \
             "${dotfilesDir}" pull --rebase
         fi
-
-        if [ ! -e "${config.home.homeDirectory}/.zshrc" ] ||
-           [ -L "${config.home.homeDirectory}/.zshrc" ]; then
-          $DRY_RUN_CMD ln -sfn \
-            "${dotfilesDir}/.zshrc" \
-            "${config.home.homeDirectory}/.zshrc"
-        fi
       '';
 
+      home.file.".zshrc" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.zshrc";
+        force = true;
+      };
+
       xdg.configFile = {
-        "ghostty".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/ghostty";
-        "hypr".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/hypr";
-        "nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/nvim";
-        "ohmyposh".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/ohmyposh";
-        "superfile".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/superfile";
+        "ghostty" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/ghostty";
+          force = true;
+        };
+        "hypr" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/hypr";
+          force = true;
+        };
+        "nvim" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/nvim";
+          force = true;
+        };
+        "ohmyposh" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/ohmyposh";
+          force = true;
+        };
+        "superfile" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/superfile";
+          force = true;
+        };
       };
     };
 }

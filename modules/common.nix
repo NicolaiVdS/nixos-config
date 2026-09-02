@@ -45,6 +45,8 @@ in
     systemd.network.wait-online.enable = false;
     networking.networkmanager.wait-online.enable = true;
 
+    environment.systemPackages = [ pkgs.git ];
+
     # --- zram ----------------------------------
     zramSwap = {
       enable = true;

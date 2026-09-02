@@ -13,6 +13,7 @@ in
     imports = [
       nixosModules.hyprland
       nixosModules.autologin
+      nixosModules.desktop-extras
     ];
 
     nix.settings = {

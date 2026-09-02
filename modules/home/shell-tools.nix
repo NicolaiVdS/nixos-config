@@ -9,6 +9,20 @@
       lsd
       ripgrep
       fd
+
+      btop
+      curl
+      wget
+      rustup
+      exiftool
+      bun
+      clang
+      lazygit
+      unzip
+      tree-sitter
+      p7zip
+      unixODBC
+      quickshell
     ];
   };
 }

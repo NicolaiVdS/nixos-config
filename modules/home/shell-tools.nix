@@ -21,7 +21,7 @@
       unzip
       tree-sitter
       p7zip
-      unixODBC
+      unixodbc
       quickshell
     ];
   };

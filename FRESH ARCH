@@ -1,0 +1,82 @@
+PACKAGES:
+> Enable multilib first
+
+```bash
+sudo pacman -S \
+neovim \
+git \
+btop \
+curl \
+wget \
+rustup \
+ghostty \
+hyprland \
+superfile \
+hyprpolkitagent \
+xdg-desktop-portal-hyprland \
+wallpiper-hyprland \
+nerd-fonts \
+steam \
+7zip \
+exiftool \
+ripgrep \
+fd \
+bun \
+clang \ 
+lazygit \
+unzip \
+tar \
+gzip \
+tree-sitter-cli \
+zsh \
+fzf \
+zoxide \
+lsd \
+oh-my-posh \
+quickshell \
+gsettings-desktop-schemas \
+qt5ct \
+qt6ct \
+unixodbc \
+ttf-material-symbols-variable
+```
+RUSTUP:
+    `rustup default stable`
+
+PARU: 
+1. `sudo pacman -S --needed base-devel`
+
+
+AUTO SIGNIN:
+1. Enable Systemd Autologin on TTY1
+
+Create a systemd drop-in configuration for getty@tty1:
+```bash
+sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
+sudo nvim /etc/systemd/system/getty@tty1.service.d/override.conf
+```
+Paste the following content:
+```toml
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin nicolaivds --noclear %I $TERM
+```
+
+2. Auto-start Hyprland in .zprofile
+
+Open or create ~/.zprofile (or ~/.zlogin):
+`nvim ~/.zprofile`
+
+Add this conditional block at the bottom:
+```bash
+if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+    echo -n "Starting Hyprland in 2s... (press ANY key / DEL to cancel)"
+
+    if read -q -t 2 "?"; then
+        echo -e "\nBypassed Hyprland. Dropping to standard shell."
+    else
+        echo -e "\nLaunching Hyprland..."
+        exec Hyprland
+    fi
+fi
+```

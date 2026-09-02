@@ -14,15 +14,20 @@
     # Hardware & VM specific drivers
     boot.initrd.availableKernelModules = [
       "virtio_gpu"
-      "qxl"
       "virtio_pci"
       "virtio_blk"
       "virtio_scsi"
     ];
 
-    hardware.graphics.enable = true;
-    myImpermanence.enable = false;
+    services.qemuGuest.enable = true;
+    services.spice-vdagentd.enable = true;
 
+    hardware.graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    myImpermanence.enable = false;
     system.stateVersion = "26.05";
   };
 }

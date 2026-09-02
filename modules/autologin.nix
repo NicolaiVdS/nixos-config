@@ -17,7 +17,5 @@
     '';
   };
 
-  flake.modules.homeManager.autologin = { ... }: {
-    programs.zsh.enable = true;
-  };
+  flake.modules.homeManager.autologin = { ... }: { };
 }
